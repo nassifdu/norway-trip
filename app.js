@@ -24,7 +24,8 @@ const ROUTES = [
     transporteAdulto: 1990, transporteCrianca: 995,
     atividadesPP: 500,
     resumo: "A rota mais famosa do país — Oslo → montanha → fiorde → Bergen — feita no ritmo de vocês, comprando cada trecho separado (e economizando ~30% sobre o pacote pronto). Perfeita como primeira viagem de fiordes.",
-    mapa: { cor: "#e79a3c", pontos: ["oslo", "finse", "myrdal", "flam", "gudvangen", "voss", "bergen"] },
+    mapa: { cor: "#e79a3c", pontos: ["oslo", "finse", "myrdal", "flam", "gudvangen", "voss", "bergen"],
+            modos: ["trem", "trem", "trem", "barco", "onibus", "trem"] },
     diasDetalhe: [
       {
         titulo: "Oslo, a capital à beira d'água",
@@ -84,7 +85,8 @@ const ROUTES = [
     transporteAdulto: 2860, transporteCrianca: 1430,
     atividadesPP: 900,
     resumo: "A rota oficial \"Bergen & the Sognefjord\" do Visit Norway: barcos-expresso pelo maior fiorde da Noruega (204 km), igreja de madeira viking de Borgund, mirante Stegastein e geleiras do Jostedalsbreen. Para quem quer ficar, não só passar.",
-    mapa: { cor: "#2aa198", pontos: ["bergen", "voss", "flam", "aurland", "laerdal", "sogndal", "balestrand", "bergen"] },
+    mapa: { cor: "#2aa198", pontos: ["bergen", "voss", "flam", "aurland", "laerdal", "sogndal", "balestrand", "bergen"],
+            modos: ["trem", "onibus", "onibus", "onibus", "onibus", "barco", "barco"] },
     diasDetalhe: [
       {
         titulo: "Bergen para aclimatar",
@@ -161,7 +163,8 @@ const ROUTES = [
     transporteAdulto: 3720, transporteCrianca: 1860,
     atividadesPP: 800,
     resumo: "A rota \"Ålesund – The Northwest – Trondheim\" do Visit Norway: o fiorde UNESCO de Geiranger, a estrada Trollstigen de ônibus, a ferrovia de Rauma (a mais bela da Europa segundo a Lonely Planet) e a cidade art nouveau de Ålesund.",
-    mapa: { cor: "#b8402d", pontos: ["bergen", "alesund", "geiranger", "andalsnes", "dombas", "trondheim", "oslo"] },
+    mapa: { cor: "#b8402d", pontos: ["bergen", "alesund", "geiranger", "andalsnes", "dombas", "trondheim", "oslo"],
+            modos: ["barco", "barco", "onibus", "trem", "trem", "trem"] },
     diasDetalhe: [
       {
         titulo: "Subindo a costa",
@@ -243,7 +246,8 @@ const ROUTES = [
     transporteAdulto: 2150, transporteCrianca: 1075,
     atividadesPP: 600,
     resumo: "Para famílias que querem UMA grande trilha: o púlpito de pedra Preikestolen, 604 m acima do Lysefjord — 8 km ida e volta, totalmente viável aos 12 anos. Combina com a rota costeira oficial Bergen–Stavanger do Visit Norway.",
-    mapa: { cor: "#8bb7e0", pontos: ["bergen", "haugesund", "stavanger", "preikestolen"] },
+    mapa: { cor: "#8bb7e0", pontos: ["bergen", "haugesund", "stavanger", "preikestolen"],
+            modos: ["onibus", "onibus", "trilha"] },
     diasDetalhe: [
       {
         titulo: "A costa de ônibus e balsa",
@@ -301,7 +305,8 @@ const ROUTES = [
     transporteAdulto: 6100, transporteCrianca: 3050,
     atividadesPP: 1500,
     resumo: "Para quem tem duas semanas e quer voltar sem NENHUMA pendência: costura o Nutshell, o Sognefjord, Geiranger e Trondheim num círculo perfeito Oslo → Bergen → norte → Oslo. É a viagem da vida.",
-    mapa: { cor: "#d8c9a3", pontos: ["oslo", "myrdal", "flam", "gudvangen", "voss", "bergen", "alesund", "geiranger", "andalsnes", "dombas", "trondheim", "oslo"] },
+    mapa: { cor: "#d8c9a3", pontos: ["oslo", "myrdal", "flam", "gudvangen", "voss", "bergen", "alesund", "geiranger", "andalsnes", "dombas", "trondheim", "oslo"],
+            modos: ["trem", "trem", "barco", "onibus", "trem", "barco", "barco", "onibus", "trem", "trem", "trem"] },
     diasDetalhe: [
       {
         titulo: "Semana 1 — Oslo, montanha e fiordes do sul",
@@ -353,6 +358,17 @@ const PRICE_ROWS = [
 ];
 const MODE_COLOR = { trem: "var(--teal)", barco: "#2d6b9e", onibus: "var(--amber-deep)", trilha: "#5a7d3b", bondinho: "var(--red)" };
 const MODE_LABEL = { trem: "Trem", barco: "Barco", onibus: "Ônibus", trilha: "Trilha", bondinho: "Bondinho" };
+const MODE_ICON = { trem: "🚆", barco: "⛴️", onibus: "🚌", trilha: "🥾", bondinho: "🚠" };
+const MODE_ORDER = ["trem", "barco", "onibus", "trilha", "bondinho"];
+
+// resumo dos transportes de um roteiro, ex.: 2× ônibus, trilha, barco, trem
+function modeCounts(r) {
+  const counts = {};
+  r.diasDetalhe.forEach(d => d.legs.forEach(l => { counts[l.modo] = (counts[l.modo] || 0) + 1; }));
+  return MODE_ORDER.filter(m => counts[m])
+    .sort((a, b) => counts[b] - counts[a])
+    .map(m => ({ modo: m, n: counts[m] }));
+}
 
 /* ---------------- DICAS ---------------- */
 const TIPS = [
@@ -565,6 +581,18 @@ function buildMap() {
   }).join("");
 
   // um único <path> para toda a costa: 1 elemento em vez de 110
+  // ícone do modo de transporte no meio de cada trecho (visível na rota ativa)
+  const modeIconsSvg = ROUTES.map(r =>
+    (r.mapa.modos || []).map((m, i) => {
+      const a = CITY_XY[r.mapa.pontos[i]], b = CITY_XY[r.mapa.pontos[i + 1]];
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      return `<g class="mode-icon" data-route="${r.id}" data-cx="${mx.toFixed(1)}" data-cy="${my.toFixed(1)}">
+        <circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="10" fill="#122c35" stroke="${r.mapa.cor}" stroke-width="1.5"/>
+        <text x="${mx.toFixed(1)}" y="${(my + 0.5).toFixed(1)}" text-anchor="middle" dominant-baseline="central" font-size="10.5">${MODE_ICON[m]}</text>
+      </g>`;
+    }).join("")
+  ).join("");
+
   const landSvg = `<path class="map-land" d="${NORWAY_PATHS.join(" ")}"/>`;
   const VB = { x: -16, y: -6, w: 652, h: MAP_H + 12 };
 
@@ -583,6 +611,7 @@ function buildMap() {
     <rect x="${VB.x}" y="${VB.y}" width="${VB.w}" height="${VB.h * 0.07}" fill="url(#fadeN)" pointer-events="none"/>
     <text class="map-sea-label" x="16" y="470" transform="rotate(-78 16 470)">MAR DA NORUEGA</text>
     ${routesSvg}
+    ${modeIconsSvg}
     ${citiesSvg}
     <g transform="translate(586,54)" opacity="0.75" class="compass">
       <circle r="22" fill="none" stroke="#8fa8ad" stroke-width="1"/>
@@ -607,7 +636,7 @@ function buildMap() {
   ).join("");
 
   const activate = id => {
-    document.querySelectorAll(".map-route, .map-route-halo").forEach(p => p.classList.toggle("is-active", p.dataset.route === id));
+    document.querySelectorAll(".map-route, .map-route-halo, .mode-icon").forEach(p => p.classList.toggle("is-active", p.dataset.route === id));
     document.querySelectorAll(".ml-item").forEach(b => b.classList.toggle("is-active", b.dataset.route === id));
   };
   legend.querySelectorAll(".ml-item").forEach(b => {
@@ -624,8 +653,10 @@ function initPanZoom(BASE) {
   const MIN_W = BASE.w / 9;
   let dragged = false;
 
-  const cityGroups = [...svg.querySelectorAll(".city-g")].map(g => {
-    const c = CITY_XY[g.dataset.city];
+  const cityGroups = [...svg.querySelectorAll(".city-g, .mode-icon")].map(g => {
+    const c = g.classList.contains("mode-icon")
+      ? { x: +g.dataset.cx, y: +g.dataset.cy }
+      : CITY_XY[g.dataset.city];
     return { el: g, cx: c.x, cy: c.y };
   });
 
@@ -736,6 +767,8 @@ function buildPicker() {
         <span class="rc-tag">${r.tag}</span>
         <span class="rc-title" style="display:block">${r.nome}</span>
         <span class="rc-meta"><b>${r.dias} dias</b> · ${r.km.toLocaleString("pt-BR")} km · transporte desde ${fmtNOK(r.transporteAdulto)}/adulto</span>
+        <span class="rc-modes">${modeCounts(r).map(({ modo, n }) =>
+          `<span class="leg-mode ${modo}">${MODE_ICON[modo]} ${n > 1 ? n + "× " : ""}${MODE_LABEL[modo]}</span>`).join("")}</span>
       </span>
     </button>`).join("");
   picker.querySelectorAll(".route-card").forEach(b =>

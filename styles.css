@@ -242,7 +242,7 @@ a:hover { color: var(--amber-deep); }
 .route-card {
   position: relative; border: none; cursor: pointer; text-align: left;
   border-radius: var(--radius); overflow: hidden;
-  aspect-ratio: 3 / 4.1;
+  aspect-ratio: 3 / 4.45;
   color: var(--paper); font-family: var(--sans);
   transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.24s;
   outline-offset: 3px;
@@ -264,6 +264,8 @@ a:hover { color: var(--amber-deep); }
 .rc-title { font-family: var(--serif); font-size: 1.32rem; font-weight: 600; line-height: 1.1; margin-bottom: 0.35rem; }
 .rc-meta { font-size: 0.82rem; color: #cdd9d3; }
 .rc-meta b { color: var(--amber); }
+.rc-modes { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.55rem; }
+.rc-modes .leg-mode { font-size: 0.6rem; padding: 0.15rem 0.4rem; }
 
 /* ---------- ROUTE DETAIL ---------- */
 .route-detail { border-radius: calc(var(--radius) + 6px); overflow: hidden; background: #10303a; border: 1px solid rgba(231,154,60,0.25); }
@@ -436,6 +438,9 @@ a:hover { color: var(--amber-deep); }
   opacity: 0; transition: opacity 0.25s; pointer-events: none; vector-effect: non-scaling-stroke;
 }
 .map-route-halo.is-active { opacity: 0.28; }
+.mode-icon { opacity: 0; transition: opacity 0.25s; pointer-events: none; }
+.mode-icon.is-active { opacity: 1; }
+.mode-icon circle { vector-effect: non-scaling-stroke; }
 .map-city { fill: var(--paper); stroke: var(--ink); stroke-width: 1.4; }
 .map-label { font-family: var(--sans); font-size: 13.5px; font-weight: 700; fill: #cfe0dd; paint-order: stroke; stroke: rgba(15,38,46,0.75); stroke-width: 3px; }
 .map-label.big { font-size: 15.5px; fill: var(--paper); }
