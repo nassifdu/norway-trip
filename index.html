@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiordes sem Carro — Roteiro de Família pela Noruega</title>
+<meta name="description" content="Guia interativo em português para uma viagem de família pelos fiordes da Noruega usando apenas trem, barco e ônibus. Roteiros, preços, distâncias e dicas para julho.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛰️</text></svg>">
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="topo">
+  <a class="nav-brand" href="#topo">
+    <span class="nav-brand-mark">N</span>
+    <span class="nav-brand-text">Fiordes<em>sem</em>Carro</span>
+  </a>
+  <nav class="nav-links">
+    <a href="#rotas">Roteiros</a>
+    <a href="#mapa">Mapa</a>
+    <a href="#precos">Preços</a>
+    <a href="#orcamento">Orçamento</a>
+    <a href="#dicas">Dicas</a>
+  </nav>
+  <button class="currency-toggle" id="currencyToggle" aria-label="Alternar moeda entre coroa norueguesa e real">
+    <span class="ct-opt is-active" data-cur="NOK">kr NOK</span>
+    <span class="ct-opt" data-cur="BRL">R$ BRL</span>
+  </button>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-img" role="img" aria-label="Vista panorâmica do Geirangerfjord a partir do mirante Ørnesvingen"></div>
+  <div class="hero-scrim"></div>
+  <div class="hero-content">
+    <p class="hero-kicker">Julho de 2026 · 2 adultos + 18 &amp; 12 anos · zero carro</p>
+    <h1 class="hero-title">Fiordes<br><em>sem</em> carro.</h1>
+    <p class="hero-sub">Um guia de família para atravessar o oeste da Noruega de <strong>trem, barco e ônibus</strong> — com preços reais, distâncias e o sol que quase não se põe.</p>
+    <div class="hero-cta">
+      <a class="btn btn-solid" href="#rotas">Ver os 5 roteiros ↓</a>
+      <a class="btn btn-ghost" href="#orcamento">Calcular orçamento</a>
+    </div>
+  </div>
+  <div class="hero-fact">
+    <span class="hf-num">≈ 18h</span>
+    <span class="hf-label">de luz por dia em meados de julho — o trem das 22h ainda viaja sob céu claro</span>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Sol da meia-noite</span><i>✦</i><span>Bergensbanen · 1.222 m de altitude</span><i>✦</i><span>Nærøyfjord · Patrimônio UNESCO</span><i>✦</i><span>Flåmsbana · 20 km, 20 túneis</span><i>✦</i><span>12–19 °C em julho</span><i>✦</i><span>Crianças de 4–15 pagam meia</span><i>✦</i>
+    <span>Sol da meia-noite</span><i>✦</i><span>Bergensbanen · 1.222 m de altitude</span><i>✦</i><span>Nærøyfjord · Patrimônio UNESCO</span><i>✦</i><span>Flåmsbana · 20 km, 20 túneis</span><i>✦</i><span>12–19 °C em julho</span><i>✦</i><span>Crianças de 4–15 pagam meia</span><i>✦</i>
+  </div>
+</div>
+
+<!-- ============ COMO FUNCIONA ============ -->
+<section class="section" id="como">
+  <div class="section-head">
+    <span class="section-index">01</span>
+    <h2>Sem carro? <em>Sem problema.</em></h2>
+    <p class="section-lede">A Noruega tem um dos transportes públicos mais bonitos do planeta: os trajetos <strong>são</strong> a atração. Quatro peças resolvem tudo:</p>
+  </div>
+  <div class="pillar-grid">
+    <article class="pillar">
+      <div class="pillar-icon">🚆</div>
+      <h3>Trens (Vy &amp; SJ Nord)</h3>
+      <p>A Bergensbanen (Oslo–Bergen) cruza o platô de Hardangervidda a 1.222 m; a Flåmsbana desce 863 m até o fiorde. Passagens abrem <strong>90 dias antes</strong> — os bilhetes <em>Minipris</em> mais baratos acabam primeiro.</p>
+      <a href="https://www.vy.no/en" target="_blank" rel="noopener">vy.no ↗</a>
+    </article>
+    <article class="pillar">
+      <div class="pillar-icon">⛴️</div>
+      <h3>Barcos &amp; balsas</h3>
+      <p>Cruzeiros elétricos no Nærøyfjord e Geirangerfjord, barcos-expresso da Norled pelo Sognefjord e balsas locais. É onde a paisagem fica absurda — garanta lugar no convés.</p>
+      <a href="https://www.norled.no/en" target="_blank" rel="noopener">norled.no ↗</a>
+    </article>
+    <article class="pillar">
+      <div class="pillar-icon">🚌</div>
+      <h3>Ônibus expressos</h3>
+      <p>Vy Express, NOR-WAY e FRAM conectam o que o trilho não alcança: Kystbussen (Bergen–Stavanger, balsas incluídas) e a Rota Dourada por Trollstigen no verão.</p>
+      <a href="https://www.nor-way.no/en" target="_blank" rel="noopener">nor-way.no ↗</a>
+    </article>
+    <article class="pillar">
+      <div class="pillar-icon">📱</div>
+      <h3>App Entur</h3>
+      <p>O planejador oficial nacional: horários de <strong>todos</strong> os trens, ônibus e barcos do país em um app só, com compra de bilhete. Baixem antes de embarcar.</p>
+      <a href="https://entur.no/en" target="_blank" rel="noopener">entur.no ↗</a>
+    </article>
+  </div>
+  <aside class="callout">
+    <strong>A regra de ouro da família:</strong> crianças de 4 a 15 anos pagam <b>50%</b> em quase tudo (trens, barcos, ônibus) — e na Vy, <b>1 criança viaja grátis</b> por adulto pagante em trens regionais. O irmão de 12 é praticamente meio bilhete a viagem inteira; a partir de 16–18 vale tarifa de adulto/estudante.
+  </aside>
+</section>
+
+<!-- ============ ROTEIROS ============ -->
+<section class="section section-dark" id="rotas">
+  <div class="section-head">
+    <span class="section-index">02</span>
+    <h2>Cinco roteiros, <em>um verão.</em></h2>
+    <p class="section-lede">Baseados nas rotas oficiais do Visit Norway, adaptados para uma família sem carro em julho. Clique em um roteiro para abrir o dia a dia completo.</p>
+  </div>
+  <div class="route-picker" id="routePicker"></div>
+  <div class="route-detail" id="routeDetail"></div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section class="section section-dark section-map" id="mapa">
+  <div class="section-head">
+    <span class="section-index">03</span>
+    <h2>O mapa da <em>aventura.</em></h2>
+    <p class="section-lede">Mapa estilizado (sem escala). Passe o mouse ou toque nos roteiros para acender cada rota.</p>
+  </div>
+  <div class="map-wrap">
+    <div class="map-legend" id="mapLegend"></div>
+    <div class="map-svg" id="mapSvg"></div>
+  </div>
+</section>
+
+<!-- ============ PREÇOS ============ -->
+<section class="section" id="precos">
+  <div class="section-head">
+    <span class="section-index">04</span>
+    <h2>Quanto custa <em>cada trecho?</em></h2>
+    <p class="section-lede">Valores de julho (alta temporada), por pessoa. Trens têm tarifa dinâmica: o intervalo vai do <em>Minipris</em> comprado cedo ao preço cheio de última hora. Use o seletor no topo para ver tudo em reais.</p>
+  </div>
+  <div class="price-table-wrap">
+    <table class="price-table" id="priceTable">
+      <thead>
+        <tr><th>Trecho</th><th>Modo</th><th>Duração</th><th>Distância</th><th>Adulto</th><th>Criança 4–15</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="table-note">✦ Fontes: Vy, SJ Nord, Norled, Norway's Best, Rødne, NOR-WAY/Kystbussen e Skyss — pesquisados em julho de 2026. Câmbio de referência: <b>1 kr = R$ 0,53</b>. Confirme sempre no Entur/site do operador antes de comprar.</p>
+</section>
+
+<!-- ============ ORÇAMENTO ============ -->
+<section class="section section-amber" id="orcamento">
+  <div class="section-head">
+    <span class="section-index">05</span>
+    <h2>A calculadora da <em>família.</em></h2>
+    <p class="section-lede">Estimativa realista para os 4 (sem passagens aéreas Brasil–Noruega). Ajuste o estilo de hospedagem e comida e veja o total mudar na hora.</p>
+  </div>
+  <div class="calc" id="calc">
+    <div class="calc-controls">
+      <div class="calc-field">
+        <label for="calcRoute">Roteiro</label>
+        <select id="calcRoute"></select>
+      </div>
+      <div class="calc-field">
+        <label>Viajantes</label>
+        <div class="calc-people">
+          <div class="cp-item"><span>Adultos (16+)</span><div class="stepper" data-key="adults"><button type="button" aria-label="menos">−</button><b>3</b><button type="button" aria-label="mais">+</button></div></div>
+          <div class="cp-item"><span>Crianças 4–15</span><div class="stepper" data-key="kids"><button type="button" aria-label="menos">−</button><b>1</b><button type="button" aria-label="mais">+</button></div></div>
+        </div>
+        <small>Você (18) já conta como adulto nas tarifas; seu irmão (12) paga meia.</small>
+      </div>
+      <div class="calc-field">
+        <label for="calcStay">Hospedagem <output id="calcStayOut"></output></label>
+        <input type="range" id="calcStay" min="0" max="2" step="1" value="1">
+        <div class="range-labels"><span>Hostel / cabana</span><span>Hotel médio</span><span>Conforto</span></div>
+      </div>
+      <div class="calc-field">
+        <label for="calcFood">Alimentação <output id="calcFoodOut"></output></label>
+        <input type="range" id="calcFood" min="0" max="2" step="1" value="1">
+        <div class="range-labels"><span>Mercado</span><span>Misto</span><span>Restaurantes</span></div>
+      </div>
+      <div class="calc-field calc-check">
+        <label><input type="checkbox" id="calcActs" checked> Incluir atividades e atrações do roteiro (cruzeiros extras, mirantes, museus)</label>
+      </div>
+    </div>
+    <div class="calc-result">
+      <div class="cr-total">
+        <span class="cr-label">Total estimado para a família</span>
+        <strong id="calcTotal">—</strong>
+        <span class="cr-alt" id="calcTotalAlt"></span>
+      </div>
+      <ul class="cr-breakdown" id="calcBreakdown"></ul>
+      <p class="cr-note">Não inclui voos internacionais (GRU/GIG → Oslo: em geral R$ 3.500–6.500 por pessoa, ida e volta) nem seguro-viagem. Estimativa, não cotação.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DICAS ============ -->
+<section class="section" id="dicas">
+  <div class="section-head">
+    <span class="section-index">06</span>
+    <h2>Dicas que valem <em>dinheiro.</em></h2>
+  </div>
+  <div class="tips-grid" id="tipsGrid"></div>
+</section>
+
+<!-- ============ GALERIA ============ -->
+<section class="section section-gallery" id="galeria">
+  <div class="section-head">
+    <span class="section-index">07</span>
+    <h2>O que espera <em>por vocês.</em></h2>
+  </div>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <p class="footer-title">Fiordes<em>sem</em>Carro</p>
+    <p>Feito com carinho para uma família brasileira de 4 · julho de 2026.<br>Roteiros inspirados nas rotas oficiais do <a href="https://www.visitnorway.com/plan-your-trip/round-trips/fjord-norway/" target="_blank" rel="noopener">Visit Norway</a>.</p>
+    <details class="footer-credits">
+      <summary>Créditos das fotos (Wikimedia Commons)</summary>
+      <ul id="photoCredits"></ul>
+    </details>
+    <p class="footer-links">
+      <a href="https://entur.no/en" target="_blank" rel="noopener">Entur</a> ·
+      <a href="https://www.vy.no/en" target="_blank" rel="noopener">Vy</a> ·
+      <a href="https://www.norled.no/en" target="_blank" rel="noopener">Norled</a> ·
+      <a href="https://www.norwaysbest.com/en" target="_blank" rel="noopener">Norway's Best</a> ·
+      <a href="https://www.fjordtours.com/en" target="_blank" rel="noopener">Fjord Tours</a> ·
+      <a href="https://www.nor-way.no/en" target="_blank" rel="noopener">NOR-WAY</a>
+    </p>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lb-close" aria-label="Fechar">✕</button>
+  <img alt="">
+  <p class="lb-caption"></p>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
