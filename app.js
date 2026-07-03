@@ -548,9 +548,11 @@ function openCity(id) {
 }
 
 function buildMap() {
+  // halo por baixo + linha por cima: brilho barato, sem filter (que trava o pan/zoom)
   const routesSvg = ROUTES.map(r => {
     const pts = r.mapa.pontos.map(p => `${CITY_XY[p].x},${CITY_XY[p].y}`).join(" ");
-    return `<polyline class="map-route" data-route="${r.id}" points="${pts}" stroke="${r.mapa.cor}" style="color:${r.mapa.cor}"/>`;
+    return `<polyline class="map-route-halo" data-route="${r.id}" points="${pts}" stroke="${r.mapa.cor}"/>
+      <polyline class="map-route" data-route="${r.id}" points="${pts}" stroke="${r.mapa.cor}"/>`;
   }).join("");
 
   const citiesSvg = Object.entries(CITY_XY).map(([id, c]) => {
@@ -562,24 +564,23 @@ function buildMap() {
      </g>`;
   }).join("");
 
-  const landSvg = NORWAY_PATHS.map(d => `<path class="map-land" d="${d}"/>`).join("");
+  // um único <path> para toda a costa: 1 elemento em vez de 110
+  const landSvg = `<path class="map-land" d="${NORWAY_PATHS.join(" ")}"/>`;
   const VB = { x: -16, y: -6, w: 652, h: MAP_H + 12 };
 
   document.getElementById("mapSvg").innerHTML = `
   <svg id="norwaySvg" viewBox="${VB.x} ${VB.y} ${VB.w} ${VB.h}" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa do sul da Noruega com as rotas dos roteiros">
     <defs>
-      <linearGradient id="fadeR" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0.86" stop-color="#fff"/><stop offset="1" stop-color="#555"/>
+      <linearGradient id="fadeE" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0f262e" stop-opacity="0"/><stop offset="1" stop-color="#0f262e"/>
       </linearGradient>
-      <linearGradient id="fadeT" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#333"/><stop offset="0.08" stop-color="#fff"/>
+      <linearGradient id="fadeN" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="#0f262e" stop-opacity="0"/><stop offset="1" stop-color="#0f262e"/>
       </linearGradient>
-      <mask id="edgeFade">
-        <rect x="${VB.x}" y="${VB.y}" width="${VB.w}" height="${VB.h}" fill="url(#fadeR)"/>
-        <rect x="${VB.x}" y="${VB.y}" width="${VB.w}" height="${VB.h}" fill="url(#fadeT)" style="mix-blend-mode:multiply"/>
-      </mask>
     </defs>
-    <g mask="url(#edgeFade)">${landSvg}</g>
+    ${landSvg}
+    <rect x="${VB.x + VB.w * 0.86}" y="${VB.y}" width="${VB.w * 0.14}" height="${VB.h}" fill="url(#fadeE)" pointer-events="none"/>
+    <rect x="${VB.x}" y="${VB.y}" width="${VB.w}" height="${VB.h * 0.07}" fill="url(#fadeN)" pointer-events="none"/>
     <text class="map-sea-label" x="16" y="470" transform="rotate(-78 16 470)">MAR DA NORUEGA</text>
     ${routesSvg}
     ${citiesSvg}
@@ -606,7 +607,7 @@ function buildMap() {
   ).join("");
 
   const activate = id => {
-    document.querySelectorAll(".map-route").forEach(p => p.classList.toggle("is-active", p.dataset.route === id));
+    document.querySelectorAll(".map-route, .map-route-halo").forEach(p => p.classList.toggle("is-active", p.dataset.route === id));
     document.querySelectorAll(".ml-item").forEach(b => b.classList.toggle("is-active", b.dataset.route === id));
   };
   legend.querySelectorAll(".ml-item").forEach(b => {
@@ -623,12 +624,19 @@ function initPanZoom(BASE) {
   const MIN_W = BASE.w / 9;
   let dragged = false;
 
+  const cityGroups = [...svg.querySelectorAll(".city-g")].map(g => {
+    const c = CITY_XY[g.dataset.city];
+    return { el: g, cx: c.x, cy: c.y };
+  });
+
   const apply = () => {
-    // limita o passeio para a área do mapa (com folga de meia tela)
     vb.x = Math.max(BASE.x - vb.w * 0.5, Math.min(BASE.x + BASE.w - vb.w * 0.5, vb.x));
     vb.y = Math.max(BASE.y - vb.h * 0.5, Math.min(BASE.y + BASE.h - vb.h * 0.5, vb.y));
     svg.setAttribute("viewBox", `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
-    svg.classList.toggle("is-zoomed", vb.w < BASE.w * 0.98);
+    // encolhe rótulos/pontos na proporção inversa do zoom (com piso) para não ficarem gigantes
+    const s = Math.max(0.28, Math.min(1, vb.w / BASE.w));
+    for (const { el, cx, cy } of cityGroups)
+      el.setAttribute("transform", `translate(${(cx * (1 - s)).toFixed(2)} ${(cy * (1 - s)).toFixed(2)}) scale(${s.toFixed(3)})`);
   };
 
   const toSvg = (cx, cy) => {
@@ -659,10 +667,12 @@ function initPanZoom(BASE) {
   // arrastar (1 dedo/mouse) e pinça (2 dedos)
   const pointers = new Map();
   let pinchDist = 0;
+  let downCity = null; // setPointerCapture desvia o evento click do alvo — guardamos a cidade no pointerdown
   svg.addEventListener("pointerdown", e => {
-    svg.setPointerCapture(e.pointerId);
-    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    try { svg.setPointerCapture(e.pointerId); } catch { /* ponteiro já liberado */ }
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY });
     dragged = false;
+    downCity = e.target.closest?.(".city-g")?.dataset.city || null;
     if (pointers.size === 2) {
       const [a, b] = [...pointers.values()];
       pinchDist = Math.hypot(a.x - b.x, a.y - b.y);
@@ -672,8 +682,8 @@ function initPanZoom(BASE) {
     if (!pointers.has(e.pointerId)) return;
     const prev = pointers.get(e.pointerId);
     const dx = e.clientX - prev.x, dy = e.clientY - prev.y;
-    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (Math.abs(dx) + Math.abs(dy) > 2) dragged = true;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, sx: prev.sx, sy: prev.sy });
+    if (Math.hypot(e.clientX - prev.sx, e.clientY - prev.sy) > 6) dragged = true;
     const r = svg.getBoundingClientRect();
     if (pointers.size === 1) {
       vb.x -= dx / r.width * vb.w;
@@ -689,9 +699,14 @@ function initPanZoom(BASE) {
       pinchDist = d;
     }
   });
-  const release = e => { pointers.delete(e.pointerId); pinchDist = 0; };
+  const release = e => {
+    pointers.delete(e.pointerId);
+    pinchDist = 0;
+    if (!dragged && downCity) openCity(downCity);
+    downCity = null;
+  };
   svg.addEventListener("pointerup", release);
-  svg.addEventListener("pointercancel", release);
+  svg.addEventListener("pointercancel", e => { pointers.delete(e.pointerId); pinchDist = 0; downCity = null; });
 
   // botões
   document.querySelectorAll(".map-zoom button").forEach(b =>
@@ -703,9 +718,8 @@ function initPanZoom(BASE) {
     })
   );
 
-  // clique nas cidades (ignora se foi arrasto)
+  // acesso por teclado às cidades (o clique/toque é resolvido no pointerup acima)
   svg.querySelectorAll(".city-g").forEach(g => {
-    g.addEventListener("click", () => { if (!dragged) openCity(g.dataset.city); });
     g.addEventListener("keydown", e => {
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openCity(g.dataset.city); }
     });
