@@ -413,67 +413,65 @@ const CREDITS = [
   "Todas via Wikimedia Commons"
 ];
 
-/* ---------------- MAPA (estilizado) ---------------- */
-const CITIES = {
-  oslo:        { x: 470, y: 555, l: "Oslo", big: true, anchor: "start", dx: 10, dy: 4 },
-  bergen:      { x: 118, y: 505, l: "Bergen", big: true, anchor: "end", dx: -10, dy: 4 },
-  voss:        { x: 196, y: 470, l: "Voss", anchor: "end", dx: -6, dy: 18 },
-  myrdal:      { x: 242, y: 492, l: "Myrdal", anchor: "end", dx: -8, dy: 14 },
-  finse:       { x: 300, y: 505, l: "Finse · 1.222 m", anchor: "start", dx: 4, dy: 22 },
-  flam:        { x: 258, y: 468, l: "Flåm", anchor: "start", dx: 9, dy: 4 },
-  gudvangen:   { x: 224, y: 452, l: "Gudvangen", anchor: "end", dx: -8, dy: -4 },
-  aurland:     { x: 268, y: 452, l: "Aurland", anchor: "start", dx: 8, dy: -2 },
-  laerdal:     { x: 300, y: 430, l: "Lærdal", anchor: "start", dx: 8, dy: 0 },
-  sogndal:     { x: 262, y: 400, l: "Sogndal", anchor: "start", dx: 8, dy: -4 },
-  balestrand:  { x: 212, y: 408, l: "Balestrand", anchor: "end", dx: -8, dy: -4 },
-  haugesund:   { x: 105, y: 610, l: "Haugesund", anchor: "end", dx: -8, dy: 4 },
-  stavanger:   { x: 128, y: 668, l: "Stavanger", big: true, anchor: "end", dx: -10, dy: 4 },
-  preikestolen:{ x: 172, y: 655, l: "Preikestolen", anchor: "start", dx: 8, dy: -4 },
-  alesund:     { x: 152, y: 238, l: "Ålesund", big: true, anchor: "end", dx: -10, dy: 0 },
-  geiranger:   { x: 232, y: 272, l: "Geiranger", anchor: "start", dx: 8, dy: 10 },
-  andalsnes:   { x: 262, y: 212, l: "Åndalsnes", anchor: "start", dx: 8, dy: -4 },
-  dombas:      { x: 338, y: 240, l: "Dombås", anchor: "start", dx: 8, dy: 10 },
-  trondheim:   { x: 388, y: 100, l: "Trondheim", big: true, anchor: "start", dx: 10, dy: 0 }
+/* ---------------- MAPA (geografia real — dados em norway-map.js) ---------------- */
+const CITY_LABELS = {
+  oslo:        { anchor: "start", dx: 10, dy: 5 },
+  bergen:      { anchor: "end", dx: -10, dy: 5 },
+  voss:        { anchor: "end", dx: -7, dy: 5 },
+  myrdal:      { anchor: "start", dx: 7, dy: 13 },
+  finse:       { anchor: "start", dx: 7, dy: 13 },
+  flam:        { anchor: "start", dx: 8, dy: -3 },
+  gudvangen:   { anchor: "end", dx: -8, dy: 3 },
+  aurland:     { anchor: "start", dx: 8, dy: -13 },
+  laerdal:     { anchor: "start", dx: 8, dy: 4 },
+  sogndal:     { anchor: "start", dx: 8, dy: -4 },
+  balestrand:  { anchor: "end", dx: -8, dy: -4 },
+  haugesund:   { anchor: "start", dx: 9, dy: 4 },
+  stavanger:   { anchor: "end", dx: -10, dy: 12 },
+  preikestolen:{ anchor: "start", dx: 8, dy: -6 },
+  alesund:     { anchor: "end", dx: -10, dy: 2 },
+  geiranger:   { anchor: "start", dx: 8, dy: 12 },
+  andalsnes:   { anchor: "start", dx: 8, dy: -5 },
+  dombas:      { anchor: "start", dx: 8, dy: 14 },
+  trondheim:   { anchor: "start", dx: 11, dy: 5 }
 };
 
 function buildMap() {
   const routesSvg = ROUTES.map(r => {
-    const pts = r.mapa.pontos.map(p => `${CITIES[p].x},${CITIES[p].y}`).join(" ");
+    const pts = r.mapa.pontos.map(p => `${CITY_XY[p].x},${CITY_XY[p].y}`).join(" ");
     return `<polyline class="map-route" data-route="${r.id}" points="${pts}" stroke="${r.mapa.cor}" style="color:${r.mapa.cor}"/>`;
   }).join("");
 
-  const citiesSvg = Object.values(CITIES).map(c =>
-    `<circle class="map-city" cx="${c.x}" cy="${c.y}" r="${c.big ? 6 : 4}"/>
-     <text class="map-label ${c.big ? "big" : ""}" x="${c.x + c.dx}" y="${c.y + c.dy}" text-anchor="${c.anchor}">${c.l}</text>`
-  ).join("");
+  const citiesSvg = Object.entries(CITY_XY).map(([id, c]) => {
+    const lb = CITY_LABELS[id] || { anchor: "start", dx: 8, dy: 4 };
+    return `<circle class="map-city" cx="${c.x}" cy="${c.y}" r="${c.big ? 5.5 : 3.8}"/>
+     <text class="map-label ${c.big ? "big" : ""}" x="${c.x + lb.dx}" y="${c.y + lb.dy}" text-anchor="${lb.anchor}">${c.l}</text>`;
+  }).join("");
+
+  const landSvg = NORWAY_PATHS.map(d => `<path class="map-land" d="${d}"/>`).join("");
 
   document.getElementById("mapSvg").innerHTML = `
-  <svg viewBox="0 0 620 760" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa estilizado dos roteiros no sul da Noruega">
+  <svg viewBox="-16 -6 652 ${MAP_H + 12}" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa do sul da Noruega com as rotas dos roteiros">
     <defs>
-      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-        <path d="M40 0H0V40" fill="none" stroke="rgba(220,232,230,0.06)" stroke-width="1"/>
-      </pattern>
+      <linearGradient id="fadeR" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0.86" stop-color="#fff"/><stop offset="1" stop-color="#555"/>
+      </linearGradient>
+      <linearGradient id="fadeT" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#333"/><stop offset="0.08" stop-color="#fff"/>
+      </linearGradient>
+      <mask id="edgeFade">
+        <rect x="-16" y="-6" width="652" height="${MAP_H + 12}" fill="url(#fadeR)"/>
+        <rect x="-16" y="-6" width="652" height="${MAP_H + 12}" fill="url(#fadeT)" style="mix-blend-mode:multiply"/>
+      </mask>
     </defs>
-    <rect width="620" height="760" fill="url(#grid)"/>
-    <!-- costa estilizada -->
-    <path d="M418 42 C 380 70, 350 60, 330 95 C 310 130, 250 140, 230 175 C 210 205, 160 200, 138 225
-             C 116 250, 150 265, 128 292 C 106 318, 145 330, 122 358 C 100 385, 150 392, 128 418
-             C 106 445, 80 460, 96 492 C 110 520, 70 545, 85 580 C 98 610, 82 640, 100 672
-             C 112 695, 140 710, 170 718"
-          fill="none" stroke="rgba(139,183,224,0.4)" stroke-width="2.5" stroke-dasharray="1 7" stroke-linecap="round"/>
-    <text class="map-sea-label" x="40" y="380" transform="rotate(-72 40 380)">MAR DA NORUEGA</text>
-    <!-- fiordes (traços) -->
-    <path d="M118 505 C 160 490, 200 470, 258 468 M258 468 C 240 460, 230 456, 224 452 M212 408 C 235 402, 250 400, 262 400 M262 400 C 280 415, 292 424, 300 430"
-          fill="none" stroke="rgba(139,183,224,0.35)" stroke-width="5" stroke-linecap="round"/>
-    <path d="M152 238 C 180 252, 210 262, 232 272 M128 668 C 145 662, 160 658, 172 655"
-          fill="none" stroke="rgba(139,183,224,0.35)" stroke-width="5" stroke-linecap="round"/>
+    <g mask="url(#edgeFade)">${landSvg}</g>
+    <text class="map-sea-label" x="16" y="470" transform="rotate(-78 16 470)">MAR DA NORUEGA</text>
     ${routesSvg}
     ${citiesSvg}
-    <!-- rosa dos ventos -->
-    <g transform="translate(560,60)" opacity="0.75">
-      <circle r="24" fill="none" stroke="#8fa8ad" stroke-width="1"/>
-      <path d="M0 -20 L5 0 L0 20 L-5 0 Z" fill="#e79a3c"/>
-      <text y="-30" text-anchor="middle" fill="#dce8e6" font-size="13" font-weight="700" font-family="Schibsted Grotesk">N</text>
+    <g transform="translate(586,54)" opacity="0.75">
+      <circle r="22" fill="none" stroke="#8fa8ad" stroke-width="1"/>
+      <path d="M0 -18 L4.5 0 L0 18 L-4.5 0 Z" fill="#e79a3c"/>
+      <text y="-28" text-anchor="middle" fill="#dce8e6" font-size="12" font-weight="700" font-family="Schibsted Grotesk">N</text>
     </g>
   </svg>`;
 

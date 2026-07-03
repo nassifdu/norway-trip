@@ -352,7 +352,7 @@ a:hover { color: var(--amber-deep); }
 
 /* ---------- MAPA ---------- */
 .section-map { padding-top: 0; }
-.map-wrap { display: grid; grid-template-columns: 250px 1fr; gap: 2rem; align-items: start; }
+.map-wrap { display: grid; grid-template-columns: 250px 1fr; gap: 2rem; align-items: center; }
 @media (max-width: 900px) { .map-wrap { grid-template-columns: 1fr; } }
 .map-legend { display: flex; flex-direction: column; gap: 0.6rem; }
 .ml-item {
@@ -364,7 +364,9 @@ a:hover { color: var(--amber-deep); }
 }
 .ml-item:hover, .ml-item.is-active { border-color: var(--amber); background: rgba(231,154,60,0.1); }
 .ml-swatch { width: 22px; height: 5px; border-radius: 3px; flex-shrink: 0; }
-.map-svg svg { width: 100%; height: auto; display: block; }
+.map-svg { display: flex; justify-content: center; }
+.map-svg svg { height: min(82vh, 780px); max-width: 100%; display: block; }
+.map-land { fill: rgba(220,232,230,0.075); stroke: rgba(139,183,224,0.45); stroke-width: 0.9; }
 .map-route { fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.34; transition: opacity 0.25s, stroke-width 0.25s; }
 .map-route.is-active { opacity: 1; stroke-width: 5.5; filter: drop-shadow(0 0 7px currentColor); }
 .map-city { fill: var(--paper); stroke: var(--ink); stroke-width: 1.4; }
