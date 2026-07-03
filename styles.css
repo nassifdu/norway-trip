@@ -364,14 +364,76 @@ a:hover { color: var(--amber-deep); }
 }
 .ml-item:hover, .ml-item.is-active { border-color: var(--amber); background: rgba(231,154,60,0.1); }
 .ml-swatch { width: 22px; height: 5px; border-radius: 3px; flex-shrink: 0; }
-.map-svg { display: flex; justify-content: center; }
-.map-svg svg { height: min(82vh, 780px); max-width: 100%; display: block; }
-.map-land { fill: rgba(220,232,230,0.075); stroke: rgba(139,183,224,0.45); stroke-width: 0.9; }
+.map-svg { position: relative; display: flex; justify-content: center; }
+.map-svg svg {
+  height: min(calc(100vh - 120px), 1100px);
+  max-width: 100%; display: block;
+  cursor: grab; touch-action: none;
+  border-radius: var(--radius);
+}
+.map-svg svg:active { cursor: grabbing; }
+.map-land { fill: rgba(220,232,230,0.075); stroke: rgba(139,183,224,0.45); stroke-width: 0.9; vector-effect: non-scaling-stroke; }
+.map-route { vector-effect: non-scaling-stroke; }
+.map-city { vector-effect: non-scaling-stroke; }
+.city-hit { fill: transparent; }
+.city-g { cursor: pointer; outline: none; }
+.city-g:hover .map-city, .city-g:focus-visible .map-city { fill: var(--amber); stroke: var(--paper); }
+.city-g:hover .map-label, .city-g:focus-visible .map-label { fill: var(--amber); }
+.map-zoom {
+  position: absolute; right: 0.8rem; bottom: 0.9rem;
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+.map-zoom button {
+  width: 2.4rem; height: 2.4rem; border-radius: 10px;
+  border: 1px solid rgba(220,232,230,0.35); background: rgba(15,38,46,0.85);
+  color: var(--ice); font-size: 1.15rem; font-weight: 700; cursor: pointer;
+  backdrop-filter: blur(4px); line-height: 1;
+}
+.map-zoom button:hover { border-color: var(--amber); color: var(--amber); }
+
+/* ---------- FICHA DA CIDADE ---------- */
+.city-modal[hidden] { display: none; }
+.city-modal {
+  position: fixed; inset: 0; z-index: 110;
+  background: rgba(9,22,27,0.9); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center; padding: 1.2rem;
+}
+.cm-card {
+  position: relative; display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  max-width: 880px; width: 100%; max-height: 88vh; overflow: auto;
+  background: var(--paper); color: var(--ink);
+  border-radius: calc(var(--radius) + 4px); box-shadow: var(--shadow-lg);
+  animation: rise 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.cm-card:not(:has(.cm-media)) { grid-template-columns: 1fr; max-width: 560px; }
+.cm-media { min-height: 300px; }
+.cm-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cm-body { padding: 1.8rem 1.7rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.cm-region { font-size: 0.74rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--red); }
+.cm-body h3 { font-family: var(--serif); font-size: 2rem; font-weight: 600; line-height: 1; }
+.cm-blurb { font-size: 0.95rem; color: var(--ink-soft); }
+.cm-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.92rem; font-weight: 600; }
+.cm-tip { font-size: 0.88rem; background: var(--ice); border-radius: 10px; padding: 0.7rem 0.9rem; }
+.cm-routes { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.2rem; }
+.cm-route-chip {
+  font-size: 0.74rem; font-weight: 700; padding: 0.22rem 0.65rem; border-radius: 999px;
+  border: 1.5px solid var(--c); color: var(--ink-2);
+}
+.cm-close {
+  position: absolute; top: 0.7rem; right: 0.7rem; z-index: 2;
+  width: 2.2rem; height: 2.2rem; border-radius: 50%;
+  border: none; background: var(--ink); color: var(--paper); font-size: 0.95rem; cursor: pointer;
+}
+.cm-close:hover { background: var(--red); }
+@media (max-width: 720px) {
+  .cm-card { grid-template-columns: 1fr !important; }
+  .cm-media { min-height: 0; max-height: 34vh; overflow: hidden; }
+}
 .map-route { fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.34; transition: opacity 0.25s, stroke-width 0.25s; }
 .map-route.is-active { opacity: 1; stroke-width: 5.5; filter: drop-shadow(0 0 7px currentColor); }
 .map-city { fill: var(--paper); stroke: var(--ink); stroke-width: 1.4; }
-.map-label { font-family: var(--sans); font-size: 12.5px; font-weight: 700; fill: #cfe0dd; }
-.map-label.big { font-size: 14.5px; fill: var(--paper); }
+.map-label { font-family: var(--sans); font-size: 13.5px; font-weight: 700; fill: #cfe0dd; paint-order: stroke; stroke: rgba(15,38,46,0.75); stroke-width: 3px; }
+.map-label.big { font-size: 15.5px; fill: var(--paper); }
 .map-sea-label { font-family: var(--serif); font-style: italic; font-size: 15px; fill: rgba(207,224,221,0.4); letter-spacing: 0.16em; }
 
 /* ---------- TABELA PREÇOS ---------- */

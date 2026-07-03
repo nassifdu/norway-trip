@@ -436,6 +436,117 @@ const CITY_LABELS = {
   trondheim:   { anchor: "start", dx: 11, dy: 5 }
 };
 
+/* Fichas das cidades — cultura, fotos e dicas */
+const CITY_INFO = {
+  oslo: { reg: "Capital · Østlandet", foto: "img/oslo-opera.jpg",
+    blurb: "Capital compacta espremida entre o fiorde e a floresta, onde vikings, arquitetura futurista e a melhor cena de museus do país convivem a 10 min de metrô.",
+    itens: ["Subir (literalmente) o telhado de mármore da Ópera", "Parque Vigeland: 212 esculturas de Gustav Vigeland", "Museus Fram e Kon-Tiki na península de Bygdøy"],
+    dica: "O Oslo Pass (24h) cobre museus + transporte público e tem versão criança." },
+  bergen: { reg: "Vestlandet · porta dos fiordes", foto: "img/bryggen.jpg",
+    blurb: "Cidade hanseática cercada por 7 montanhas. O cais de Bryggen (UNESCO) era o escritório da liga comercial alemã no séc. XIV — hoje é um labirinto de galerias e cafés entre vielas de madeira torta.",
+    itens: ["Fløibanen até o monte Fløyen: trilhas, cabras e canoas grátis", "Mercado de peixe: prove o salmão defumado na hora", "Museu Hanseático e os becos de Bryggen"],
+    dica: "Chove 1 dia sim, 1 não — programem os fiordes para o dia de sol e Bergen para o de chuva." },
+  voss: { reg: "Entre Bergen e o fiorde",
+    blurb: "A capital norueguesa dos esportes radicais: paraglider, rafting, skydiving indoor. Fica à beira do lago Vangsvatnet e é a baldeação clássica entre trem e ônibus do Nutshell.",
+    itens: ["Voss Gondol: 9 min até o monte Hanguren", "Rafting no rio Stranda (a partir de 12 anos!)", "Vindtunnel: paraquedismo indoor para a família"],
+    dica: "Se sobrar 1h entre conexões, o lago em frente à estação rende um piquenique perfeito." },
+  myrdal: { reg: "866 m · entroncamento ferroviário", foto: "img/myrdal.jpg",
+    blurb: "Não é bem uma cidade: é uma estação no alto da montanha onde a Bergensbanen encontra a Flåmsbana. Sem estradas — só trilhos, bicicletas e a descida mais famosa da Noruega.",
+    itens: ["A baldeação com a vista mais bonita do país", "Início da Rallarvegen, a ciclovia dos ferroviários", "Cachoeiras despencando em todas as direções"],
+    dica: "Na troca de trem, fiquem do lado esquerdo da Flåmsbana descendo para Flåm." },
+  finse: { reg: "1.222 m · o teto da ferrovia", foto: "img/finse.jpg",
+    blurb: "A estação mais alta da Noruega, sem acesso por estrada, à beira da geleira Hardangerjøkulen. Foi aqui que George Lucas filmou o planeta gelado Hoth de Star Wars: O Império Contra-Ataca (1979).",
+    itens: ["Neve ao lado dos trilhos até em pleno julho", "Rallarmuseet: o museu dos operários da ferrovia", "Vista da geleira Hardangerjøkulen do vagão"],
+    dica: "Vocês passam por aqui no trem Oslo–Myrdal — câmeras prontas ~2h40 depois de Oslo." },
+  flam: { reg: "Aurlandsfjord · 350 habitantes", foto: "img/flam-railway.jpg",
+    blurb: "Vilarejo minúsculo no fundo do Aurlandsfjord que recebe o trem mais bonito do mundo. Base perfeita para 1–2 noites: cruzeiros, caiaque, zipline e uma cervejaria viking premiada.",
+    itens: ["Museu da Flåmsbana (grátis, ao lado da estação)", "Ægir BryggeriPub: hidromel para os adultos, suco artesanal para o resto", "Flåm Zipline: 1.381 m de tirolesa"],
+    dica: "Mercadinho Coop fica atrás do hotel Fretheim — abasteçam o piquenique aqui." },
+  gudvangen: { reg: "Fim do Nærøyfjord", foto: "img/naeroyfjord.jpg",
+    blurb: "O nome significa “campo dos deuses”: um anfiteatro de paredões de 1.400 m no ponto final do cruzeiro pelo Nærøyfjord. Abriga a vila viking mais autêntica do país.",
+    itens: ["Njardarheimr: vila viking viva, com moradores em personagem", "Tiro com arco e cunhagem de moedas vikings", "A cachoeira Kjelfossen (755 m) bem atrás da vila"],
+    dica: "Reservem 1h30 antes do ônibus para a vila viking — o irmão de 12 vai querer ficar mais." },
+  aurland: { reg: "Aurlandsfjord · vila dos sapatos", foto: "img/stegastein.jpg",
+    blurb: "Vilarejo que inventou o penny loafer (o mocassim “Aurland” original, anos 1930) e guarda o mirante Stegastein, uma prancha de madeira flutuando 650 m acima do fiorde.",
+    itens: ["Stegastein ao pôr do sol (que em julho é ~22h30)", "Fábrica-loja do sapato Aurland, desde 1880", "Geitost: o famoso queijo caramelo de cabra local"],
+    dica: "O ônibus panorâmico Flåm–Stegastein tem 4–6 saídas/dia no verão; compre ida e volta." },
+  laerdal: { reg: "Sognefjord · vila histórica",
+    foto: "img/borgund.jpg",
+    blurb: "Gamle Lærdalsøyri tem 160 casas de madeira dos sécs. XVIII–XIX intactas — cenário de filme. A 30 min está Borgund, a igreja de madeira viking (1180) mais bem preservada da Noruega.",
+    itens: ["Stavkirke de Borgund e suas cabeças de dragão", "Centro do Salmão Selvagem norueguês", "Passear entre as casinhas de Gamle Lærdalsøyri"],
+    dica: "O túnel de Lærdal (24,5 km, o rodoviário mais longo do mundo) tem cavernas azuis — o ônibus atravessa." },
+  sogndal: { reg: "Sognefjord · hub estudantil",
+    blurb: "Cidadezinha universitária e agrícola, famosa por cerejas e sidra, que funciona como rótula de ônibus e barcos do Sognefjord — e porta de entrada para as geleiras do Jostedalsbreen.",
+    itens: ["Base para a caminhada na geleira Nigardsbreen", "Sorvete de morango + cereja da região", "Vista do fiorde na chegada de barco"],
+    dica: "Supermercados grandes e hospedagem mais barata que nos vilarejos — bom pit stop." },
+  balestrand: { reg: "Sognefjord · vila dos artistas", foto: "img/balestrand.jpg",
+    blurb: "Pintores do séc. XIX se apaixonaram por esta península — e nunca mais foi embora. Vilas suíças ornamentadas, o histórico Hotel Kviknes e a igreja de madeira que inspirou a capela de Frozen.",
+    itens: ["Igreja de São Olavo (1897), a “capela de Arendelle”", "Ciderhuset: sidras e sucos de maçã do fiorde", "Nadar no fiorde do píer (16 °C: coragem!)"],
+    dica: "O buffet histórico do Kviknes é caro, mas o café da tarde com vista compensa." },
+  haugesund: { reg: "Costa oeste · terra dos reis vikings",
+    blurb: "Parada do Kystbussen entre Bergen e Stavanger. Aqui ao lado, em Avaldsnes, Harald Cabelo Belo unificou a Noruega em 872 — é o “berço do reino”.",
+    itens: ["Avaldsnes: fazenda real viking e igreja de São Olavo", "Orla de Smedasundet, cheia de cafés", "Festival do arenque (a cidade cresceu do peixe)"],
+    dica: "Dá para descer, almoçar na orla e pegar o Kystbussen seguinte — bilhetes são por trecho." },
+  stavanger: { reg: "Rogaland · capital do petróleo", foto: "img/stavanger.jpg",
+    blurb: "Mistura curiosa: 170 casinhas brancas do séc. XVIII em Gamle Stavanger, a rua mais colorida do país (Øvre Holmegate) e arte de rua de nível mundial graças ao festival Nuart.",
+    itens: ["Museu do Petróleo: plataforma para escalar + cinema", "Caça aos murais do Nuart pelas ruelas", "Sverd i fjell: as 3 espadas viking gigantes na praia"],
+    dica: "Domingo os mercados fecham — garantam o lanche da trilha no sábado." },
+  preikestolen: { reg: "Lysefjord · 604 m", foto: "img/preikestolen.jpg",
+    blurb: "O Púlpito: uma laje de granito perfeitamente plana de 25×25 m pairando 604 m sobre o Lysefjord. A trilha (8 km ida e volta, 500 m de subida) é a grande aventura em família da viagem.",
+    itens: ["4–5h de caminhada com pausas — viável aos 12 anos", "Chegar antes das 9h = platô quase vazio", "Ver o barco do cruzeiro passando lá embaixo"],
+    dica: "Não tem grade nenhuma: fotos deitados na borda e irmão sempre à vista." },
+  alesund: { reg: "Sunnmøre · art nouveau", foto: "img/alesund.jpg",
+    blurb: "Queimou inteira numa noite de 1904 e renasceu em 3 anos no estilo art nouveau — torres, gárgulas e fachadas cor pastel entre o mar e os Alpes de Sunnmøre.",
+    itens: ["Mirante Aksla: 418 degraus, vista dos 7 ilhéus", "Atlanterhavsparken: um dos maiores aquários do norte da Europa", "Canal Brosundet e o centro art nouveau"],
+    dica: "O Jugendstilsenteret (museu do art nouveau) tem um “túnel do tempo” que crianças adoram." },
+  geiranger: { reg: "Geirangerfjord · UNESCO", foto: "img/seven-sisters.jpg",
+    blurb: "250 moradores, 600 mil visitantes: o fiorde-cartão-postal da Noruega, com as cachoeiras das Sete Irmãs despencando 250 m direto no mar esmeralda.",
+    itens: ["Mirante Ørnesvingen (a curva da águia)", "Norsk Fjordsenter: como os fiordes nasceram", "Sorvete de morango da fazenda Westerås"],
+    dica: "Fujam do horário dos navios de cruzeiro (checem o calendário do porto) — a vila esvazia à tarde." },
+  andalsnes: { reg: "Romsdal · capital do montanhismo", foto: "img/trollstigen.jpg",
+    blurb: "Encaixada entre o fiorde e a parede vertical de Trollveggen (1.000 m, a maior da Europa), é o QG dos alpinistas noruegueses — com gôndola panorâmica e a ferrovia de Rauma na porta.",
+    itens: ["Romsdalsgondolen até Nesaksla (708 m)", "Rampestreken: passarela suspensa sobre a cidade", "Norsk Tindesenter: museu do alpinismo com parede de escalada"],
+    dica: "A gôndola tem tarifa família — e lá em cima o restaurante Eggen tem vista de 360°." },
+  dombas: { reg: "Dovrefjell · cruzamento de trilhos",
+    blurb: "Vilarejo onde a Raumabanen encontra a Dovrebanen, à beira do parque nacional de Dovrefjell — o único lugar da Europa com bois-almiscarados selvagens, sobreviventes da era do gelo.",
+    itens: ["Safári de boi-almiscarado no Dovrefjell (verão)", "Pavilhão-mirante Snøhetta (arquitetura premiada)", "Renas selvagens pela janela do trem"],
+    dica: "Se for só baldeação, sentem do lado esquerdo do trem para Trondheim: o vale de Drivdalen é lindo." },
+  trondheim: { reg: "Trøndelag · primeira capital", foto: "img/trondheim.jpg",
+    blurb: "Capital viking da Noruega (997 d.C.) e destino de peregrinação há mil anos graças à catedral de Nidaros. Hoje é cidade universitária: jovem, ciclável e cheia de cafés.",
+    itens: ["Catedral de Nidaros + coroa das joias reais", "Bakklandet: casinhas coloridas e a ponte da felicidade", "Trampe: o único elevador de bicicletas do mundo"],
+    dica: "Rockheim (museu do pop/rock norueguês) é interativo — e o irmão vira DJ." }
+};
+
+function openCity(id) {
+  const info = CITY_INFO[id];
+  const c = CITY_XY[id];
+  if (!info || !c) return;
+  const routesHere = ROUTES.filter(r => r.mapa.pontos.includes(id));
+  const modal = document.getElementById("cityModal");
+  modal.innerHTML = `
+    <div class="cm-card" role="dialog" aria-modal="true" aria-label="${c.l}">
+      <button class="cm-close" aria-label="Fechar">✕</button>
+      ${info.foto ? `<div class="cm-media"><img src="${info.foto}" alt="${c.l}"></div>` : ""}
+      <div class="cm-body">
+        <span class="cm-region">${info.reg}</span>
+        <h3>${c.l.split("·")[0].trim()}</h3>
+        <p class="cm-blurb">${info.blurb}</p>
+        <ul class="cm-list">${info.itens.map(i => `<li>✦ ${i}</li>`).join("")}</ul>
+        <p class="cm-tip">💡 ${info.dica}</p>
+        ${routesHere.length ? `<div class="cm-routes">${routesHere.map(r =>
+          `<span class="cm-route-chip" style="--c:${r.mapa.cor}">${r.nome.split(":")[0]}</span>`).join("")}</div>` : ""}
+      </div>
+    </div>`;
+  modal.hidden = false;
+  document.body.style.overflow = "hidden";
+  const close = () => { modal.hidden = true; document.body.style.overflow = ""; };
+  modal.querySelector(".cm-close").addEventListener("click", close);
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  document.addEventListener("keydown", function esc(e) {
+    if (e.key === "Escape") { close(); document.removeEventListener("keydown", esc); }
+  });
+}
+
 function buildMap() {
   const routesSvg = ROUTES.map(r => {
     const pts = r.mapa.pontos.map(p => `${CITY_XY[p].x},${CITY_XY[p].y}`).join(" ");
@@ -444,14 +555,18 @@ function buildMap() {
 
   const citiesSvg = Object.entries(CITY_XY).map(([id, c]) => {
     const lb = CITY_LABELS[id] || { anchor: "start", dx: 8, dy: 4 };
-    return `<circle class="map-city" cx="${c.x}" cy="${c.y}" r="${c.big ? 5.5 : 3.8}"/>
-     <text class="map-label ${c.big ? "big" : ""}" x="${c.x + lb.dx}" y="${c.y + lb.dy}" text-anchor="${lb.anchor}">${c.l}</text>`;
+    return `<g class="city-g" data-city="${id}" tabindex="0" role="button" aria-label="Sobre ${c.l}">
+       <circle class="city-hit" cx="${c.x}" cy="${c.y}" r="13"/>
+       <circle class="map-city" cx="${c.x}" cy="${c.y}" r="${c.big ? 5.5 : 3.8}"/>
+       <text class="map-label ${c.big ? "big" : ""}" x="${c.x + lb.dx}" y="${c.y + lb.dy}" text-anchor="${lb.anchor}">${c.l}</text>
+     </g>`;
   }).join("");
 
   const landSvg = NORWAY_PATHS.map(d => `<path class="map-land" d="${d}"/>`).join("");
+  const VB = { x: -16, y: -6, w: 652, h: MAP_H + 12 };
 
   document.getElementById("mapSvg").innerHTML = `
-  <svg viewBox="-16 -6 652 ${MAP_H + 12}" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa do sul da Noruega com as rotas dos roteiros">
+  <svg id="norwaySvg" viewBox="${VB.x} ${VB.y} ${VB.w} ${VB.h}" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa do sul da Noruega com as rotas dos roteiros">
     <defs>
       <linearGradient id="fadeR" x1="0" y1="0" x2="1" y2="0">
         <stop offset="0.86" stop-color="#fff"/><stop offset="1" stop-color="#555"/>
@@ -460,20 +575,27 @@ function buildMap() {
         <stop offset="0" stop-color="#333"/><stop offset="0.08" stop-color="#fff"/>
       </linearGradient>
       <mask id="edgeFade">
-        <rect x="-16" y="-6" width="652" height="${MAP_H + 12}" fill="url(#fadeR)"/>
-        <rect x="-16" y="-6" width="652" height="${MAP_H + 12}" fill="url(#fadeT)" style="mix-blend-mode:multiply"/>
+        <rect x="${VB.x}" y="${VB.y}" width="${VB.w}" height="${VB.h}" fill="url(#fadeR)"/>
+        <rect x="${VB.x}" y="${VB.y}" width="${VB.w}" height="${VB.h}" fill="url(#fadeT)" style="mix-blend-mode:multiply"/>
       </mask>
     </defs>
     <g mask="url(#edgeFade)">${landSvg}</g>
     <text class="map-sea-label" x="16" y="470" transform="rotate(-78 16 470)">MAR DA NORUEGA</text>
     ${routesSvg}
     ${citiesSvg}
-    <g transform="translate(586,54)" opacity="0.75">
+    <g transform="translate(586,54)" opacity="0.75" class="compass">
       <circle r="22" fill="none" stroke="#8fa8ad" stroke-width="1"/>
       <path d="M0 -18 L4.5 0 L0 18 L-4.5 0 Z" fill="#e79a3c"/>
       <text y="-28" text-anchor="middle" fill="#dce8e6" font-size="12" font-weight="700" font-family="Schibsted Grotesk">N</text>
     </g>
-  </svg>`;
+  </svg>
+  <div class="map-zoom">
+    <button data-z="in" aria-label="Aproximar">+</button>
+    <button data-z="out" aria-label="Afastar">−</button>
+    <button data-z="reset" aria-label="Recentralizar">⌂</button>
+  </div>`;
+
+  initPanZoom(VB);
 
   const legend = document.getElementById("mapLegend");
   legend.innerHTML = ROUTES.map(r =>
@@ -492,6 +614,102 @@ function buildMap() {
     b.addEventListener("click", () => activate(b.dataset.route));
   });
   activate(ROUTES[0].id);
+}
+
+/* pan + zoom via manipulação do viewBox */
+function initPanZoom(BASE) {
+  const svg = document.getElementById("norwaySvg");
+  const vb = { ...BASE };
+  const MIN_W = BASE.w / 9;
+  let dragged = false;
+
+  const apply = () => {
+    // limita o passeio para a área do mapa (com folga de meia tela)
+    vb.x = Math.max(BASE.x - vb.w * 0.5, Math.min(BASE.x + BASE.w - vb.w * 0.5, vb.x));
+    vb.y = Math.max(BASE.y - vb.h * 0.5, Math.min(BASE.y + BASE.h - vb.h * 0.5, vb.y));
+    svg.setAttribute("viewBox", `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+    svg.classList.toggle("is-zoomed", vb.w < BASE.w * 0.98);
+  };
+
+  const toSvg = (cx, cy) => {
+    const r = svg.getBoundingClientRect();
+    return { x: vb.x + (cx - r.left) / r.width * vb.w, y: vb.y + (cy - r.top) / r.height * vb.h };
+  };
+
+  const zoomAt = (px, py, factor) => {
+    const w = Math.max(MIN_W, Math.min(BASE.w, vb.w * factor));
+    const f = w / vb.w;
+    vb.x = px - (px - vb.x) * f;
+    vb.y = py - (py - vb.y) * f;
+    vb.w = w; vb.h *= f;
+    apply();
+  };
+
+  svg.addEventListener("wheel", e => {
+    e.preventDefault();
+    const p = toSvg(e.clientX, e.clientY);
+    zoomAt(p.x, p.y, e.deltaY > 0 ? 1.18 : 1 / 1.18);
+  }, { passive: false });
+
+  svg.addEventListener("dblclick", e => {
+    const p = toSvg(e.clientX, e.clientY);
+    zoomAt(p.x, p.y, 1 / 1.8);
+  });
+
+  // arrastar (1 dedo/mouse) e pinça (2 dedos)
+  const pointers = new Map();
+  let pinchDist = 0;
+  svg.addEventListener("pointerdown", e => {
+    svg.setPointerCapture(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    dragged = false;
+    if (pointers.size === 2) {
+      const [a, b] = [...pointers.values()];
+      pinchDist = Math.hypot(a.x - b.x, a.y - b.y);
+    }
+  });
+  svg.addEventListener("pointermove", e => {
+    if (!pointers.has(e.pointerId)) return;
+    const prev = pointers.get(e.pointerId);
+    const dx = e.clientX - prev.x, dy = e.clientY - prev.y;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (Math.abs(dx) + Math.abs(dy) > 2) dragged = true;
+    const r = svg.getBoundingClientRect();
+    if (pointers.size === 1) {
+      vb.x -= dx / r.width * vb.w;
+      vb.y -= dy / r.height * vb.h;
+      apply();
+    } else if (pointers.size === 2) {
+      const [a, b] = [...pointers.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (pinchDist > 0 && d > 0) {
+        const mid = toSvg((a.x + b.x) / 2, (a.y + b.y) / 2);
+        zoomAt(mid.x, mid.y, pinchDist / d);
+      }
+      pinchDist = d;
+    }
+  });
+  const release = e => { pointers.delete(e.pointerId); pinchDist = 0; };
+  svg.addEventListener("pointerup", release);
+  svg.addEventListener("pointercancel", release);
+
+  // botões
+  document.querySelectorAll(".map-zoom button").forEach(b =>
+    b.addEventListener("click", () => {
+      const cx = vb.x + vb.w / 2, cy = vb.y + vb.h / 2;
+      if (b.dataset.z === "in") zoomAt(cx, cy, 1 / 1.5);
+      else if (b.dataset.z === "out") zoomAt(cx, cy, 1.5);
+      else { Object.assign(vb, BASE); apply(); }
+    })
+  );
+
+  // clique nas cidades (ignora se foi arrasto)
+  svg.querySelectorAll(".city-g").forEach(g => {
+    g.addEventListener("click", () => { if (!dragged) openCity(g.dataset.city); });
+    g.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openCity(g.dataset.city); }
+    });
+  });
 }
 
 /* ---------------- RENDER: PICKER + DETALHE ---------------- */
